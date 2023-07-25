@@ -1,12 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { ITask } from "./task.interface";
+import { Task } from "./task.entity";
+import { createTaskDto } from "./dto/create-task.dto";
 
 @Injectable()
 export class TaskService {
-  private tasks: ITask[] = [
-    {id: 1, tasks: 'task 1'},
-    {id: 2, tasks: 'task 2'},
-  ]
+  private tasks: ITask[] = []
 
   getTasks(): ITask[] {
     return this.tasks;
@@ -18,9 +17,10 @@ export class TaskService {
   }
 
   
-  createTask(task: ITask): ITask {
-    this.tasks.push(task)
-    return task;
+  createTask({task, tags, status}: createTaskDto): ITask {
+    const newTask = new Task(task, tags, status)
+    this.tasks.push(newTask)
+    return newTask;
   }
 }
  
